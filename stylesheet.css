@@ -1,0 +1,108 @@
+body {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+@media handheld, only screen and (max-width: 1024px)
+{
+    #wrapper {
+        margin-top: 50%;
+    }
+
+    #headline {
+        text-decoration: none;
+        color: #000;
+        font-family: Sans-Serif;
+        padding: 0em;
+    }
+
+    /* h2 {
+        margin-bottom: -0.5em;
+    } */
+
+    /* img {
+        margin-top: 1em;
+        padding-left: 2.5em;
+        padding-right: 2.5em;
+        padding-top: 2em;
+        vertical-align: middle;
+    }
+
+    #github {
+        width: 1.9%;
+        height: 1.9%;
+    }
+
+    #linkedin {
+        width: 2%;
+        height: 2%;
+    }
+
+    #twitter {
+        width: 2%;
+        height: 2%;
+    }
+
+    #contact {
+    	padding-top: 16em;
+        text-decoration: none;
+        color: #000;
+        font-family: Georgia, times, serif;
+    	font-weight: bold;
+    } */
+}
+
+#wrapper {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15%;
+}
+
+#headline {
+    text-decoration: none;
+    color: #000;
+    font-family: Georgia, times, serif;
+    padding: 0em;
+}
+
+a{
+    text-decoration: none;
+    color: #000;
+}
+
+h2 {
+    margin-bottom: -0.5em;
+}
+
+img {
+    margin-top: 1em;
+    padding-left: 2.5em;
+    padding-right: 2.5em;
+    padding-top: 2em;
+    vertical-align: middle;
+}
+
+#github {
+    width: 1.9%;
+    height: 1.9%;
+}
+
+#linkedin {
+    width: 2%;
+    height: 2%;
+}
+
+#twitter {
+    width: 2%;
+    height: 2%;
+}
+
+#contact {
+	padding-top: 16em;
+    text-decoration: none;
+    color: #000;
+    font-family: Georgia, times, serif;
+	font-weight: bold;
+}
