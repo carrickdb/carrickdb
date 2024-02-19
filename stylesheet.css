@@ -1,9 +1,3 @@
-body {
-    background-color: white;
-    margin: 0;
-    padding: 0;
-}
-
 @media (max-width: 600px)
 {
     #wrapper {
@@ -31,10 +25,8 @@ body {
         height: 12%;
     }
 
-    .blog_post {
+    .post_container {
         margin: 1em;
-        font-size: 120%;
-        font-family: Garamond, times, serif;
     }
 }
 
@@ -64,12 +56,21 @@ body {
         height: 2%;
     }
 
-    .blog_post {
+    .post_container {
         max-width: 50%;
         margin: 0 auto;
-        font-size: 120%;
-        font-family: Garamond, times, serif; 
     }
+}
+
+.blog_post {
+    font-size: 120%;
+    font-family: Garamond, times, serif;
+}
+
+body {
+    background-color: white;
+    margin: 0;
+    padding: 0;
 }
 
 #blog_link {
@@ -79,6 +80,11 @@ body {
 a {
     text-decoration: none;
     color: #000;
+}
+
+div.blog_post a {
+    font-weight: bold;
+    color: rgb(48, 125, 151)
 }
 
 h2 {

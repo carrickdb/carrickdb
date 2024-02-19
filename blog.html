@@ -1,20 +1,57 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="stylesheet.css"/>
-    <title>Carrick Bartle</title>
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" rel="stylesheet" href="stylesheet.css"/>
+        <title>Carrick Bartle</title>
+    </head>
     <body>
-        <div class="blog_post">
+        <div class="post_container">
+            <div class="blog_post">
 
             <h2>Intro to TLS Certificates</h2>
             
-            <h3>by Carrie Bartle</h3>
+            <h3>by <a href="carrickbartle.com">Carrie Bartle</a></h3>
+            <p>February 20, 2024</p>
+            <br>
             <p><strong>TL;DR:</strong> Certificates are data structures that include a public key, a digital signature, and some other data. Clients use certificates to authenticate servers during TLS handshakes.</p>
-            
+            <p><strong>Disclaimer:</strong> This post contains only my personal knowledge and opinions, and I'm not writing on behalf of anyone else, including the company I work for.</p>
+
+            <h4>Contents</h4>
+            <ul>
+            <p><a href="#what">What certificates are</a></p>
+            <p><a href="#signatures">Digital signatures</a></p>
+            <p><a href="#cas">Why you have to get a certificate from some other company</a></p>
+            <p><a href="#expiration">Why you have to worry about a certificate expiring</a></p>
+            <p><a href="#revocation">Certificate revocation</a></p>
+            <p><a href="#compromise">What an attacker can do with a compromised certificate</a></p>
+            <p><a href="#attack">Why an attacker can't (successfully) pretend to be your server</a></p>
+            <p><a href="#sans">How a system checks whether a certificate is valid for a particular domain name</a></p>
+            </ul>
+
+            <h4 id="what">What certificates are</h4>
+
+            <p>TLS certificates are used to authenticate endpoints. They allow you to be reasonably confident that you're connecting to the website you think you're connecting to. Your browser received a certificate shortly before it received this sentence. You should be able to find the certificate for a website if you click one of the icons on the left side of the address bar and drill down into the menu.</p>
+
+            <div class="blog_image" id="cert_chrome">
+            <img src="certificate-chrome.png">
             </div>
-            
+
+            <p>This is the human-readable representation of a certificate, which is actually a binary data structure encoded in ASN.1. If you were to cat out a raw certificate in a terminal, you'd mostly see a bunch of garbage:</p>
+
+            <h4 id="signatures">Digital signatures</h4>
+
+
+
+            <h4 id="cas">Why you have to get a certificate from some other company</h4>
+            <h4 id="expiration">Why you have to worry about a certificate expiring</h4>
+            <h4 id="revocation">Certificate revocation</h4>
+            <h4 id="compromise">What an attacker can do with a compromised certificate</h4>
+            <h4 id="attack">Why an attacker can't (successfully) pretend to be your server</h4>
+            <h4 id="sans">How a system checks whether a certificate is valid for a particular domain name</h4>
+
+            </div>
+        </div>
     </body>
 </html>
