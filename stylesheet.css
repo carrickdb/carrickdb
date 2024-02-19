@@ -4,65 +4,79 @@ body {
     padding: 0;
 }
 
-@media handheld, only screen and (max-width: 600px)
+@media (max-width: 600px)
 {
     #wrapper {
-        margin-top: 50%;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 35%;
     }
 
     #headline {
         text-decoration: none;
         color: #000;
-        font-family: Sans-Serif;
+        font-family: Georgia, times, serif;
         padding: 0em;
+        font-size: 80%
     }
 
-    h2 {
-        margin-bottom: -0.5em;
+    #github {
+        width: 11%;
+        height: 11%;
+    }
+    
+    #linkedin {
+        width: 12%;
+        height: 12%;
     }
 
-    img {
-        margin-top: 1em;
-        padding-left: 2.5em;
-        padding-right: 2.5em;
-        padding-top: 2em;
-        vertical-align: middle;
+    .blog_post {
+        margin: 1em;
+        font-size: 120%;
+        font-family: Garamond, times, serif;
+    }
+}
+
+@media (min-width: 601px)
+{
+    #wrapper {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 15%;
+    }
+
+    #headline {
+        text-decoration: none;
+        color: #000;
+        font-family: Georgia, times, serif;
+        padding: 0em;
     }
 
     #github {
         width: 1.9%;
         height: 1.9%;
     }
-
+    
     #linkedin {
         width: 2%;
         height: 2%;
     }
 
-    #contact {
-    	padding-top: 16em;
-        text-decoration: none;
-        color: #000;
-        font-family: Georgia, times, serif;
-    	font-weight: bold;
+    .blog_post {
+        max-width: 50%;
+        margin: 0 auto;
+        font-size: 120%;
+        font-family: Garamond, times, serif; 
     }
 }
 
-#wrapper {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 15%;
+#blog_link {
+    font-size: 150%;
 }
 
-#headline {
-    text-decoration: none;
-    color: #000;
-    font-family: Georgia, times, serif;
-    padding: 0em;
-}
-
-a{
+a {
     text-decoration: none;
     color: #000;
 }
@@ -77,16 +91,6 @@ img {
     padding-right: 2.5em;
     padding-top: 2em;
     vertical-align: middle;
-}
-
-#github {
-    width: 1.9%;
-    height: 1.9%;
-}
-
-#linkedin {
-    width: 2%;
-    height: 2%;
 }
 
 #contact {
