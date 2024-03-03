@@ -19,7 +19,6 @@
             <p><strong>Disclaimer:</strong> This post contains only my personal knowledge and opinions, and I'm not writing on behalf of anyone else, including the company I work for.</p>
 
             <h4>Contents</h4>
-            <ul>
             <p><a href="#what">What certificates are</a></p>
             <p><a href="#signatures">Digital signatures</a></p>
             <p><a href="#cas">Why you have to get a certificate from some other company</a></p>
@@ -28,14 +27,13 @@
             <p><a href="#compromise">What an attacker can do with a compromised certificate</a></p>
             <p><a href="#attack">Why an attacker can't (successfully) pretend to be your server</a></p>
             <p><a href="#sans">How a system checks whether a certificate is valid for a particular domain name</a></p>
-            </ul>
 
             <h4 id="what">What certificates are</h4>
 
             <p>TLS certificates are used to authenticate endpoints. They allow you to be reasonably confident that you're connecting to the website you think you're connecting to. Your browser received a certificate shortly before it received this sentence. You should be able to find the certificate for a website if you click one of the icons on the left side of the address bar and drill down into the menu.</p>
 
             <div class="blog_image" id="cert_chrome">
-            <img src="certificate-chrome.png">
+            <img src="certs-img/certificate-chrome.png">
             </div>
 
             <p>This is the human-readable representation of a certificate, which is actually a binary data structure encoded in ASN.1. If you were to cat out a raw certificate in a terminal, you'd mostly see a bunch of garbage:</p>

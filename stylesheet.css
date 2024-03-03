@@ -1,44 +1,37 @@
 /**** Phone ****/
 @media (max-width: 600px)
 {
-    .icon-size {
-        width: 10vw; /* Adjust based on viewport width */
-        height: auto; /* Maintain aspect ratio */
-        object-fit: contain;
-    }
-
     .spacing {
         width: calc(100% - 10vw);
         margin: 0 auto;
     }
 
     .row-1 { margin-top: 28vh; }
+
+    /**** Contact ****/  
+    .contact-container {
+        margin-top: 35vh;
+    }
 }
 
 /**** Desktop ****/
 @media (min-width: 601px)
 {
-    .icon-size {
-        width: 5vw; /* Adjust based on viewport width */
-        height: auto; /* Maintain aspect ratio */
-        object-fit: contain;
-    }
-
     .spacing {
         width: calc(100% - 40vw);
         margin: 0 auto;
     }
 
     .row-1 { margin-top: 32vh; }
+
+    /**** Contact ****/
+    .contact-container {
+        margin-top: 40vh;
+    }
 }
 
-#github {
-    width: 47%;
-    height: 47%
-}
-
-.custom-spacing {
-    padding-top: 5em;
+.spaced-words {
+    white-space: pre;
 }
 
 a {
@@ -46,19 +39,8 @@ a {
     color: #000;
 }
 
-#contact {
-    text-decoration: none;
-    color: #000;
-}
-
 .text {
-    /* font-weight: bold; */
     font-family: "Gill Sans", sans-serif;
-}
-
-#blog_link {
-    font-size: 150%;
-    color: rgb(214, 226, 230) !important
 }
 
 /**** Blog ****/
@@ -67,9 +49,32 @@ div.blog_post a {
     color: rgb(48, 125, 151)
 }
 
-/*
 .blog_post {
     font-size: 120%;
     font-family: Garamond, times, serif;
 }
-*/
+
+/**** Contact ****/
+.center-content {
+    text-align: center;
+}
+
+.icons {
+    display: flex;
+    justify-content: center;
+    gap: 1em; /* Space between icons */
+}
+
+#email {
+    font-size: 200%;
+}
+
+#github {
+    height: 4vh;
+    width: auto
+}
+
+#linkedin {
+    height: 4vh;
+    width: auto
+}
