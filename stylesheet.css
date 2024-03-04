@@ -12,17 +12,33 @@
     .contact-container {
         margin-top: 35vh;
     }
+
+    /**** Blog ****/
+    img {
+        text-align: center;
+        width: calc(100% - 1.8vw);
+        height: auto;
+    }
 }
 
 /**** Desktop ****/
 @media (min-width: 601px)
 {
     .spacing {
-        width: calc(100% - 40vw);
+        width: calc(100% - 50vw);
         margin: 0 auto;
     }
 
     .row-1 { margin-top: 32vh; }
+
+    /**** Blog ****/
+    img {
+        text-align: center;
+        width: 65%;
+        height: auto;
+        display: block;
+        margin:0 auto;
+    }
 
     /**** Contact ****/
     .contact-container {
@@ -43,9 +59,13 @@ a {
     font-family: "Gill Sans", sans-serif;
 }
 
+#links {
+    font-size: 120%;
+}
+
 /**** Blog ****/
 div.blog_post a {
-    font-weight: bold;
+    /* font-weight: bold; */
     color: rgb(48, 125, 151)
 }
 
