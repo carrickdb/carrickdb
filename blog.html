@@ -13,6 +13,11 @@
             .closer-p {
                 margin-bottom: -0.5rem;
             }
+
+            .larger-img {
+                width: 100%;
+                height: auto
+            }
         </style>
     </head>
     <body>
@@ -51,7 +56,7 @@
 
             <p>Like a lot of things in security, people usually aren't aware of the existence of certificates unless something goes wrong with one of them. When that happens, your browser displays a full-page error like this:</p>
 
-            <img src="certs-img/error.png">
+            <img class="larger-img" src="certs-img/error.png">
 
             <p>Certificates are sent during the <a href="https://datatracker.ietf.org/doc/html/rfc8446#section-2">TLS handshake</a>, the initial, negotiation phase of a TLS connection. In a typical connection on the web, TLS lies above TCP and encrypts everything above it, which is usually HTTPS. TLS (or Transport Layer Security) began life as "<a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#SSL_1.0,_2.0,_and_3.0">SSL</a>," or Secure Sockets Layer, at Netscape in the 1990s. It was renamed "TLS" when it became a standard at the Internet Engineering Task Force (IETF), a standards body. Because certificates really took off with SSL, you'll still commonly see them referred to as "SSL certificates."</p>
 
@@ -87,21 +92,83 @@
                 <li>Verify that the entity you're communicating with possesses example.com's private key.</li>
             </ol>
 
-            <p>However, this would obviously still be very annoying for both the trusted third party and all the website owners. The way that these third parties (<a href="https://en.wikipedia.org/wiki/Certificate_authority">certificate authorities</a>, or CAs) check whether something has a particular private key and controls a domain is usually automated: the CA sends a long, arbitrary string to an entity claiming to be example.com, then the CA checks whether that entity placed that string at a particular URL or in a DNS record that example.com is expected to have control over. This process is called "<a href="https://en.wikipedia.org/wiki/Domain-validated_certificate">domain validation</a>."</p>
+            <p>However, this would obviously still be very annoying for both the trusted third party and all the website owners. The way that these third parties (<a href="https://en.wikipedia.org/wiki/Certificate_authority">certificate authorities</a>, or CAs) check whether something has a particular private key and controls a domain is <a href="https://www.rfc-editor.org/rfc/rfc8555.html#page-53">usually automated</a>: the CA sends a long, arbitrary string to an entity claiming to be example.com, then the CA checks whether that entity placed that string at a particular URL or in a DNS record that example.com is expected to have control over. This process is called "<a href="https://en.wikipedia.org/wiki/Domain-validated_certificate">domain validation</a>."</p>
 
-<p>You may be wondering: if a CA can check whether something is example.com, why couldn't I do that myself in the first place? If our threat model includes the fact that an attacker may have control over your network, there's no way for you to do this check and have any confidence that you're actually checking the real example.com. We assume that a CA, however, is not getting MITM'd when they validate a website's domain. This is admittedly a pretty big assumption, which is why some CAs check DNS records from several different vantage points.</p>
+            <p>You may be wondering: if a CA can check whether something is example.com, why couldn't I do that myself in the first place? If our threat model includes the fact that an attacker may have control over your network, there's no way for you to do this check and have any confidence that you're actually checking the real example.com. We assume that a CA, however, is not getting MITM'd when they validate a website's domain. This is admittedly a pretty big assumption, which is why some CAs check DNS records from <a href="https://letsencrypt.org/2020/02/19/multi-perspective-validation.html">several different vantage points.</a></p>
 
-<p>Some certificate authorities also do additional validation like "organization validation," whereby they attempt to check whether the entity that's requesting the certificate is the organization they claim to be in a human, real-world sense. However, this additional validation is of dubious value (which is a subject for another blog post).</p>
+            <p>Some certificate authorities also do additional validation like "organization validation," whereby they attempt to check whether the entity that's requesting the certificate is the organization they claim to be in a human, real-world sense. However, this additional validation is of <a href="https://arstechnica.com/information-technology/2017/12/nope-this-isnt-the-https-validated-stripe-website-you-think-it-is/">dubious value</a>.</p>
 
-<p>Having to deal with a bunch of public keys can get rather cumbersome: they're intentionally as random as possible and contain no information like whom they belong to. Certificates solve this problem: in addition to a public key, they contain the name of the entity associated with that public key, the name of the CA that signed the certificate, and the CA's signature over all that information. It's called a certificate because it certifies something: server certificates certify that a CA checked that the hosts at the domain(s) listed in the certificate have the private key associated with the public key in the certificate. And like certificates in the real world, this certificate has a signature.</p>
+            <p>Having to deal with a bunch of public keys can get rather cumbersome: they're intentionally as random as possible and contain no information like whom they belong to. Certificates solve this problem: in addition to a public key, they contain the name of the entity associated with that public key, the name of the CA that signed the certificate, and the CA's signature over all that information. It's called a certificate because it certifies something: server certificates certify that a CA checked that the hosts at the domain(s) listed in the certificate have the private key associated with the public key in the certificate. And like certificates in the real world, this certificate has a signature.</p>
 
-The CA gives you their public key in the form of a certificate as well, but in this case, it's "self-signed," meaning the signature attached to it was made by the private key associated with the public key in the certificate. This type of certificate is called a "root" certificate because it forms a root of trust: nothing vouches for the trustworthiness of this certificate but your faith in it, and everything that certificate vouches for depends on the trustworthiness of that certificate. This means that you want to get this root in the most secure manner possible. They're usually baked right into operating systems and browsers. If you have macOS, you can open Keychain Access and see all the roots your system trusts by default.
+            <p>The CA gives you their public key in the form of a certificate as well, but in this case, it's "self-signed," meaning the signature attached to it was made by the private key associated with the public key in the certificate. This type of certificate is called a "root" certificate because it forms a root of trust: nothing vouches for the trustworthiness of this certificate but your faith in it, and everything that certificate vouches for depends on the trustworthiness of that certificate. This means that you want to get this root in the most secure manner possible. They're usually baked right into operating systems and browsers. If you have macOS, you can open Keychain Access and see all the roots your system trusts by default.</p>
+
+            <img class="larger-img" src="certs-img/keychain.png">
+
+            <p>You may be thinking, "That's a lot of trust to put in some company I've never heard of." If so, you are correct. Who you're really trusting are the root programs of the various operating systems and browsers you use, and they take <a href="https://groups.google.com/a/mozilla.org/g/dev-security-policy">great pains</a> to determine whether or not they should include a particular root in their systems based on the trustworthiness and past behavior of the CA that owns it.</p>
+
+            <p>The private keys of root certificates, the foundations of your trust, are obviously extremely sensitive material, so part of the <a href="https://cabforum.org/baseline-requirements-documents/">requirements</a> that a consortium of CAs and browsers mandates for publicly trusted certificates is the secure management of roots. Roots are created in a meticulous and excitingly named process called a <a href="https://www.youtube.com/watch?v=YrV_P9xjHc8&ab_channel=InternetAssignedNumbersAuthority">signing ceremony</a>, which involves generating the root key in a tamper-proof Hardware Security Module.</p>
+
+            <p>The more you use something, the more likely it is to be compromised, so you really don't want to use a root's private key to sign a bunch of websites' keys all the time. Ideally, you would stick that thing in a safe somewhere and never use it. So CAs have their root sign just a few certificates known as "intermediate" certificates, and it's these certificates that sign new certificates for websites that request them. Sometimes these certificates generate yet another certificate off the first intermediate, and that's the one that signs websites' certificates. This forms a "chain" from the root to the server's certificate, which is called a "leaf." (Why we don't call intermediates "branches" remains a mystery.)</p>
+
+            <p>This whole system of CAs and root distribution is referred to as <a href="https://en.wikipedia.org/wiki/Public_key_infrastructure">public key infrastructure</a> (PKI). If you're thinking, "There has to be a better way to do this," people did experiment with <a href="https://en.wikipedia.org/wiki/Web_of_trust">other ways of distributing trust</a>, with mixed results.</p>
 
             <h4 class="closer-p" id="expiration"><a href="#expiration">Why you have to worry about a certificate expiring</a></h4>
+
+            <p>In addition to making sure that a certificate chains to a trusted root, your OS or browser also performs <a href="https://support.mozilla.org/en-US/kb/secure-website-certificate#w_how-does-firefox-verify-certificate-integrity">a bunch of other checks</a> as well. One of them is whether the certificate has expired or not, which was the cause of the certificate error I showed above. (That error was from <a href="http://badssl.com">badssl.com</a>, which is an awesome website with endpoints that are deliberately misconfigured with certificates that are invalid for one reason or another.)</p>
+
+            <p>As I mentioned <a href="#cas">above</a>, the more you use something, the more likely it is to have been compromised, whether through error or malice, so you don't want to use the same certificate for very long. Prior to 2018, certificates were allowed to be valid for a whopping <a href="https://www.sectigo.com/knowledge-base/detail/TLS-SSL-Certificate-Lifespan-History-2-3-and-5-year-validity/kA01N000000zFKp">three years</a>, but the CA/B Forum has narrowed this window over time, to the point where the maximum validity period is currently (as of February 2024) 398 days. In 2023, Google <a href="https://www.chromium.org/Home/chromium-security/root-ca-policy/moving-forward-together/">recommended</a> further narrowing this window to 90 days, which is the validity period of free certificates from Let's Encrypt, which, at the time of this writing, issues the <a href="https://crt.sh/cert-populations">most certificates per year</a> in the world of any CA, by far. The reason for these shorter validity periods is that if your 1-year certificate is compromised, say, 4 months into its validity, an attacker could pretend to be your server for a whole 8 months.</p>
+
             <h4 class="closer-p" id="revocation"><a href="#revocation">Certificate revocation</a></h4>
+
+            <p>You may be thinking, "Just revoke it." Certificate revocation is a process by which a certificate owner notifies the CA that their certificate has been compromised. However, you would only revoke a certificate if you were aware that it had been compromised, and that isn't always the case. Shorter certificate lifetimes guarantee that a compromised certificate will only be usable without an error message for a short while, even if you're totally unaware that it's been compromised.</p>
+
+            <p>Initially, systems would download Certificate Revocation Lists (CRLs) from endpoints listed in the certificate:</p>
+
+            <img class="larger-img" src="certs-img/crl.png">
+
+            <p>If the certificate is listed in the CRL, it's considered invalid and the client terminates the connection.</p>
+
+            <p>However, CRLs became so massive (the one partially shown above is over 6MBs) that it became completely infeasible to download every time you wanted to check whether a certificate had been revoked. So CAs created Online Certificate Status Protocol (<a href="https://datatracker.ietf.org/doc/html/rfc2560">OCSP</a>), whereby a system can check the revocation status of just one certificate. This has privacy implications since it requires telling a CA which websites you're visiting.</p>
+
+            <p>Moreover, your connection to an OCSP responder can go awry, but browsers don't want that to stop you from visiting the website, so they "<a href="https://scotthelme.co.uk/certificate-revocation-google-chrome/">fail open</a>" and allow you to connect to the website. This makes OCSP rather useless, because if an attacker wants you to connect to a server with a revoked certificate, all they have to do is block your requests to OCSP and CRL endpoints. To solve this problem, people came up with something called <a href="https://blog.cloudflare.com/high-reliability-ocsp-stapling">OCSP stapling</a>, but as you can see, solving this problem is getting more and more complicated, which is another reason the industry is just pushing for shorter certificate lifetimes.</p>
+
             <h4 class="closer-p" id="compromise"><a href="#compromise">What an attacker can do with a compromised certificate</a></h4>
+
+            <p>So what could an attacker do with your certificate's compromised private key? They could, of course, validly authenticate themselves to users as your website. However, if your servers are using the <a href="https://wiki.mozilla.org/Security/Server_Side_TLS">currently recommended TLS ciphersuites</a>, the attacker could not decrypt your server's traffic. This is because, with those ciphersuites, the certificate is used only for authentication, and the parties create brand new symmetric keys for encryption in each connection. This is to ensure "forward secrecy," i.e. even if an attacker compromises a long-lived key like a certificate's private key, they <a href="https://people.scs.carleton.ca/~paulv/papers/sts-final.pdf">can't decrypt</a> any encrypted communications they may have intercepted in the past.</p>
+
+            <p>However, if you're using a ciphersuite that doesn't guarantee forward secrecy, such as any ciphersuite that uses the RSA key exchange, the client <a href="https://datatracker.ietf.org/doc/html/rfc5246#section-7.4.7.1">uses the server's certificate's public key</a> to encrypt secret material that's used to generate the keys used for encryption. This is one of the reasons it's best to use only TLS 1.3 if you can. TLS 1.2 provides many footguns, including <a href="https://ciphersuite.info/cs/TLS_NULL_WITH_NULL_NULL/">turning encryption off completely</a>. (1.3 also has an additional bonus of being faster since the handshake has half as many round trips as 1.2.)</p>
+
             <h4 class="closer-p" id="attack"><a href="#attack">Why an attacker can't (successfully) pretend to be your server</a></h4>
+
+            <p>You'd be right to wonder: "Wait, even if a server authenticates itself to me with its certificate, how do I know the rest of its communications are actually from that server? What if an attacker is just forwarding me both example.com's certificate and the signature that proves they have the private key?"</p>
+
+            <img class="larger-img" src="certs-img/attack.png">
+
+            <p>This is because the brand new keys the client and server negotiated for encrypting this session are cryptographically "<a href="https://csrc.nist.gov/glossary/term/cryptographic_binding">bound</a>" to the certificate's private key. To generate these symmetric encryption keys, the client and server use what's called an "ephemeral" Diffie-Hellman key exchange, since the resulting key doesn't last very long. The best way I know of to explain the Diffie-Hellman key exchange at a high-level is this <a href="https://upload.wikimedia.org/wikipedia/commons/4/46/Diffie-Hellman_Key_Exchange.svg">image from Wikipedia</a>, which shows that two parties can come up with the same color of paint if they exchange different paint colors.</p>
+
+            <img class="smaller-img" src="certs-img/paint.png">
+
+            <p>The actual exchange is the mathematical equivalent of this, whereby the parties exchange public keys (which in this context are also known as "key shares") that are "mixed" to create the same symmetric key. The server sends the client its key share, and then its certificate, and then the signature over the key share and certificate, which, in a nice two birds/one stone situation, both proves that it has the private key (in what's called the CertificateVerify) and also "binds" the public key to the key share.</p>
+
+            <img class="with-caption" src="certs-img/protocol.png">
+            <p class="caption">The <a href="https://datatracker.ietf.org/doc/html/rfc8446#section-2">TLS 1.3 protocol</a> in a super helpful diagram.</p>
+
+            <p>If the attacker intercepted example.com's key share and sent the client its own, the client would get an error when it tried to validate the signature over the certificate and the imposter key share.</p>
+
             <h4 class="closer-p" id="sans"><a href="#sans">How a system checks whether a certificate is valid for a particular domain name</a></h4>
+
+            <p>There's one more thing you might need to know about certificates: something else systems check is whether the name of the website you're attempting to connect to is listed on the certificate. This might seem like a "duh" thing to mention, but there are some subtleties that make it a bit more complicated than a string equality check. First, your browser checks whether the domain you entered into the browser's address bar or in the link you clicked is in the "Subject Alternative Names" (SANs). The SANs are usually a list of DNS names but can also include IP addresses.</p>
+
+            <p>Certs with more than one SAN are called "multi-domain" certificates and allow you to have the same cert on multiple different hosts.</p>
+
+            <p>Your browser ignores the "<a href="https://datatracker.ietf.org/doc/html/rfc2818#section-3.1">Common Name</a>" field, which lists just one of the SANs and is there just for human convenience, since it would be ridiculous to have to say "www.example.org, example.net, example.edu, example.com, example.org" when referring to a certificate.</p>
+
+            <p>But what if you're constantly setting up new endpoints with subdomains like foo.example.com, bar.example.com, etc., and it would be really inconvenient to have to get a certificate for each one? In that case, you might want what's called a "wildcard" certificate, which includes a SAN with an asterisk in the left-most position like so: *.example.com. Similar to regular expressions, the asterisk is understood to match with anything, like a wildcard in a card game. However, the asterisk can only match <a href="https://datatracker.ietf.org/doc/html/rfc2818#page-5">one component</a> in the DNS name, not any number of components. For instance, <a href="https://wrong.host.badssl.com/">https://wrong.host.badssl.com</a> serves a cert that's invalid for its DNS name because its SANs include only badssl.com and *.badssl.com, not *.host.badssl.com.</p>
+
+            <p>Wildcard certificates and multi-domain certificates are more convenient than single-domain certs since you can use the same cert across several different hosts, but they have a wider "blast radius": the amount of damage a compromised key can do. If their private key is compromised, an attacker can pose as many hosts rather than just one. If you find yourself wanting a wildcard cert, it'll be up to you to decide whether that trade-off is worth it.</p>
+
+            <br>
+            <p>And that concludes the basics on certificates. Email me at carrickdb at gmail if you have any requests for additional topics to go over or to let me know if I got something wrong.</p>
         </div>
     </body>
 </html>
