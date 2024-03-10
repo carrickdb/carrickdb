@@ -1,98 +1,119 @@
-body {
-    background-color: white;
-    margin: 0;
-    padding: 0;
-}
-
-@media handheld, only screen and (max-width: 600px)
+/**** Phone ****/
+@media (max-width: 600px)
 {
-    #wrapper {
-        margin-top: 50%;
+    .spacing {
+        width: calc(100% - 10vw);
+        margin: 0 auto;
     }
 
-    #headline {
-        text-decoration: none;
-        color: #000;
-        font-family: Sans-Serif;
-        padding: 0em;
+    .row-1 { margin-top: 28vh; }
+
+    /**** Contact ****/
+    .contact-container {
+        margin-top: 35vh;
     }
 
-    h2 {
-        margin-bottom: -0.5em;
-    }
-
+    /**** Blog ****/
     img {
-        margin-top: 1em;
-        padding-left: 2.5em;
-        padding-right: 2.5em;
-        padding-top: 2em;
-        vertical-align: middle;
-    }
-
-    #github {
-        width: 1.9%;
-        height: 1.9%;
-    }
-
-    #linkedin {
-        width: 2%;
-        height: 2%;
-    }
-
-    #contact {
-    	padding-top: 16em;
-        text-decoration: none;
-        color: #000;
-        font-family: Georgia, times, serif;
-    	font-weight: bold;
+        text-align: center;
+        width: calc(100% - 1.8vw);
+        height: auto;
     }
 }
 
-#wrapper {
+/**** Desktop ****/
+@media (min-width: 601px)
+{
+    .spacing {
+        width: calc(100% - 50vw);
+        margin: 0 auto;
+    }
+
+    .row-1 { margin-top: 32vh; }
+
+    /**** Blog ****/
+    img {
+        text-align: center;
+        width: 65%;
+        height: auto;
+        display: block;
+        margin:0 auto;
+    }
+
+    .smaller-img {
+        text-align: center;
+        width: 35%;
+        height: auto
+    }
+
+    /**** Contact ****/
+    .contact-container {
+        margin-top: 40vh;
+    }
+}
+
+p {
+    line-height: 28px;
+}
+
+.spaced-words {
+    white-space: pre;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.with-caption {
+    margin-bottom: -1.25rem;
+}
+
+.caption {
+    font-style: italic;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 15%;
 }
 
-#headline {
-    text-decoration: none;
-    color: #000;
-    font-family: Georgia, times, serif;
-    padding: 0em;
+.text {
+    font-family: "Gill Sans", sans-serif;
 }
 
-a{
-    text-decoration: none;
-    color: #000;
+#links {
+    font-size: 120%;
 }
 
-h2 {
-    margin-bottom: -0.5em;
+/**** Blog ****/
+div.blog_post a {
+    /* font-weight: bold; */
+    color: rgb(48, 125, 151)
 }
 
-img {
-    margin-top: 1em;
-    padding-left: 2.5em;
-    padding-right: 2.5em;
-    padding-top: 2em;
-    vertical-align: middle;
+.blog_post {
+    font-size: 120%;
+    font-family: Garamond, times, serif;
+}
+
+/**** Contact ****/
+.center-content {
+    text-align: center;
+}
+
+.icons {
+    display: flex;
+    justify-content: center;
+    gap: 1em; /* Space between icons */
+}
+
+#email {
+    font-size: 200%;
 }
 
 #github {
-    width: 1.9%;
-    height: 1.9%;
+    height: 4vh;
+    width: auto
 }
 
 #linkedin {
-    width: 2%;
-    height: 2%;
-}
-
-#contact {
-	padding-top: 16em;
-    text-decoration: none;
-    color: #000;
-    font-family: Georgia, times, serif;
-	font-weight: bold;
+    height: 4vh;
+    width: auto
 }
