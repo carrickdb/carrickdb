@@ -29,7 +29,7 @@
         margin: 0 auto;
     }
 
-    .row-1 { margin-top: 32vh; }
+    .row-1 { margin-top: 34vh; }
 
     /**** Blog ****/
     img {
@@ -101,7 +101,8 @@ div.blog_post a {
 .icons {
     display: flex;
     justify-content: center;
-    gap: 1em; /* Space between icons */
+    gap: 2em; /* Space between icons */
+    margin-top: 10px; /* Space from email address above*/
 }
 
 #email {
@@ -114,6 +115,11 @@ div.blog_post a {
 }
 
 #linkedin {
+    height: 4vh;
+    width: auto
+}
+
+#mastodon {
     height: 4vh;
     width: auto
 }
