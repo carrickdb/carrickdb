@@ -38,7 +38,7 @@
                 <li><a href="#expiration">Why you have to worry about a certificate expiring</a></li>
                 <li><a href="#revocation">Certificate revocation</a></li>
                 <li><a href="#compromise">What an attacker can do with a compromised certificate</a></li>
-                <li><a href="#attack">Why an attacker can't (successfully) pretend to be your server</a></li>
+                <li><a href="#attack">Why an attacker can't (successfully) pretend to be your server  without the certificate's private key</a></li>
                 <li><a href="#sans">How a system checks whether a certificate is valid for a particular domain name</a></li>
             </ul>
 
@@ -134,19 +134,13 @@
 
             <p>Moreover, your connection to an OCSP responder can go awry, but browsers don't want that to stop you from visiting the website, so they "<a href="https://scotthelme.co.uk/certificate-revocation-google-chrome/">fail open</a>" and allow you to connect to the website. This makes OCSP rather useless, because if an attacker wants you to connect to a server with a revoked certificate, all they have to do is block your requests to OCSP and CRL endpoints. To solve this problem, people came up with something called <a href="https://en.wikipedia.org/wiki/OCSP_stapling">OCSP stapling</a>, but as you can see, solving this problem is getting more and more complicated, which is another reason the industry is just pushing for shorter certificate lifetimes.</p>
 
-            <h4 class="closer-p" id="compromise"><a href="#compromise">What an attacker can do with a compromised certificate</a></h4>
-
-            <p>So what could an attacker do with your certificate's compromised private key? They could, of course, validly authenticate themselves to users as your website. However, if your servers are using the <a href="https://wiki.mozilla.org/Security/Server_Side_TLS">currently recommended TLS ciphersuites</a>, the attacker could not decrypt your server's traffic. This is because, with those ciphersuites, the certificate is used only for authentication, and the parties create brand new symmetric keys for encryption in each connection. This is to ensure "<a href="https://people.scs.carleton.ca/~paulv/papers/sts-final.pdf">forward secrecy</a>," i.e. even if an attacker compromises a long-lived key like a certificate's private key, they can't decrypt any encrypted communications they may have intercepted in the past.</p>
-
-            <p>However, if you're using a ciphersuite that doesn't guarantee forward secrecy, such as any ciphersuite that uses the RSA key exchange, the client <a href="https://datatracker.ietf.org/doc/html/rfc5246#section-7.4.7.1">uses the server's certificate's public key</a> to encrypt secret material that's used to generate the keys used for encryption. This is one of the reasons it's best to use only TLS 1.3 if you can. TLS 1.2 provides many footguns, including <a href="https://ciphersuite.info/cs/TLS_NULL_WITH_NULL_NULL/">turning encryption off completely</a>. (1.3 also has an additional bonus of being faster since the handshake has half as many round trips as 1.2.)</p>
-
-            <h4 class="closer-p" id="attack"><a href="#attack">Why an attacker can't (successfully) pretend to be your server</a></h4>
+            <h4 class="closer-p" id="attack"><a href="#attack">Why an attacker can't (successfully) pretend to be your server without the certificate's private key</a></h4>
 
             <p>You'd be right to wonder: "Wait, even if a server authenticates itself to me with its certificate, how do I know the rest of its communications are actually from that server? What if an attacker is just forwarding me both example.com's certificate and the signature that proves they have the private key?"</p>
 
             <img class="larger-img" src="certs-img/attack.png">
 
-            <p>This is because the brand new keys the client and server negotiated for encrypting this session are cryptographically "<a href="https://csrc.nist.gov/glossary/term/cryptographic_binding">bound</a>" to the certificate's private key. To generate these symmetric encryption keys, the client and server use what's called an <a href="https://datatracker.ietf.org/doc/html/rfc8446#section-2">"ephemeral" Diffie-Hellman key exchange</a>, since the resulting key doesn't last very long. The best way I know of to explain the Diffie-Hellman key exchange at a high level is this <a href="https://upload.wikimedia.org/wikipedia/commons/4/46/Diffie-Hellman_Key_Exchange.svg">image from Wikipedia</a>, which shows that two parties can come up with the same color of paint if they exchange different paint colors.</p>
+            <p>This is because the brand new keys the client and server negotiated for encrypting this session are cryptographically "<a href="https://csrc.nist.gov/glossary/term/cryptographic_binding">bound</a>" to the certificate's private key. To generate these symmetric encryption keys, in most ciphersuites (or collections of cryptographic primitives used by TLS), the client and server use what's called an <a href="https://datatracker.ietf.org/doc/html/rfc8446#section-2">"ephemeral" Diffie-Hellman key exchange</a>, since the resulting key doesn't last very long. The best way I know of to explain the Diffie-Hellman key exchange at a high level is this <a href="https://upload.wikimedia.org/wikipedia/commons/4/46/Diffie-Hellman_Key_Exchange.svg">image from Wikipedia</a>, which shows that two parties can come up with the same color of paint if they exchange different paint colors.</p>
 
             <img class="smaller-img" src="certs-img/paint.png">
 
@@ -156,6 +150,12 @@
             <p class="caption">The <a href="https://datatracker.ietf.org/doc/html/rfc8446#section-2">TLS 1.3 protocol</a> in a super helpful diagram.</p>
 
             <p>If the attacker intercepted example.com's key share and sent the client its own, the client would get an error when it tried to validate the signature over the certificate and the imposter's key share.</p>
+
+            <h4 class="closer-p" id="compromise"><a href="#compromise">What an attacker can do with a compromised certificate</a></h4>
+
+            <p>So what could an attacker do if they got a hold of your certificate's private key? They could, of course, validly authenticate themselves to users as your website. However, if your servers are using the <a href="https://wiki.mozilla.org/Security/Server_Side_TLS">currently recommended TLS ciphersuites</a>, the attacker could not decrypt your server's traffic. This is because, with those ciphersuites, the certificate is used only for authentication, and the parties create brand new symmetric keys for encryption in each connection (i.e. with the ephemeral Diffie-Hellman key exchange described in the previous section). This is to ensure "<a href="https://people.scs.carleton.ca/~paulv/papers/sts-final.pdf">forward secrecy</a>," i.e. even if an attacker compromises a long-lived key like a certificate's private key, they can't decrypt any encrypted communications they may have intercepted in the past.</p>
+
+            <p>However, if you're using a ciphersuite that doesn't guarantee forward secrecy, such as any ciphersuite that uses the RSA key exchange, the client <a href="https://datatracker.ietf.org/doc/html/rfc5246#section-7.4.7.1">uses the server's certificate's public key</a> to encrypt secret material that's used to generate the keys used for encryption. This is one of the reasons it's best to use only TLS 1.3 if you can. TLS 1.2 provides many footguns, including <a href="https://ciphersuite.info/cs/TLS_NULL_WITH_NULL_NULL/">turning encryption off completely</a>. (1.3 also has an additional bonus of being faster since the handshake has half as many round trips as 1.2.)</p>
 
             <h4 class="closer-p" id="sans"><a href="#sans">How a system checks whether a certificate is valid for a particular domain name</a></h4>
 
